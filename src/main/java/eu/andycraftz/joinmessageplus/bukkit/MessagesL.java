@@ -6,6 +6,9 @@ import fr.xephi.authme.events.LoginEvent;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +27,7 @@ import org.bukkit.plugin.PluginManager;
 public class MessagesL implements Listener {
 
     private final JoinMessagePlus plugin;
+    private final MiniMessage miniMessage;
 
     private final String JoinMessage;
     private final String QuitMessage;
@@ -34,17 +38,17 @@ public class MessagesL implements Listener {
     public MessagesL(JoinMessagePlus plugin) {
         String QuitMessage1;
         this.plugin = plugin;
+        this.miniMessage = MiniMessage.miniMessage();
 
         if (this.plugin.bungeesupport) {
             JoinMessage = "";
             QuitMessage = "";
         } else {
-            String JoinMessageFile = this.plugin.cfg.getConfig().getString("JoinMessage.Message");
-            assert JoinMessageFile != null;
-            JoinMessage = JoinMessageFile.replace("&", "§");
-            String QuitMessageFile = this.plugin.cfg.getConfig().getString("QuitMessage.Message");
-            assert QuitMessageFile != null;
-            QuitMessage = QuitMessageFile.replace("&", "§");
+            JoinMessage = this.plugin.cfg.getConfig().getString("JoinMessage.Message");
+            assert JoinMessage != null;
+
+            QuitMessage = this.plugin.cfg.getConfig().getString("QuitMessage.Message");
+            assert QuitMessage != null;
         }
 
         JoinMessageEnabled = this.plugin.cfg.getConfig().getBoolean("JoinMessage.Enabled");
@@ -57,12 +61,9 @@ public class MessagesL implements Listener {
     }
 
     private void sendMessage(Player p, Player target, String msg) {
-        msg = msg.replace("%player_name%", p.getName()).replace("%player_displayname%", p.getDisplayName());
-        if (plugin.placeholderapi) {
-            msg = PlaceholderAPI.setPlaceholders(p, msg);
-        }
-        Bukkit.getConsoleSender().sendMessage(msg); // Send message also to console
-        target.sendMessage(msg);
+        Component component = miniMessage.deserialize(JoinMessage, Placeholder.component("player_name", Component.text(p.getName())), Placeholder.component("player_displayname", Component.text(p.getDisplayName())));
+        Bukkit.getConsoleSender().sendMessage(component); // Send message also to console
+        target.sendMessage(component);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
