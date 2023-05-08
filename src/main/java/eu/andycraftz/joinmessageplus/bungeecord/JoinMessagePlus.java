@@ -2,6 +2,8 @@ package eu.andycraftz.joinmessageplus.bungeecord;
 
 import java.util.logging.Level;
 
+import net.kyori.adventure.platform.bungeecord.BungeeAudiences;
+import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -17,6 +19,7 @@ public class JoinMessagePlus extends Plugin {
 
     // Config
     public Config cfg;
+    public BungeeAudiences bungeeAudiences;
 
     @Override
     public void onEnable() {
@@ -32,5 +35,12 @@ public class JoinMessagePlus extends Plugin {
         // Events
         PluginManager pm = getProxy().getPluginManager();
         pm.registerListener(this, new MessagesL(this));
+        this.bungeeAudiences = BungeeAudiences.create(this);
+    }
+
+    @Override
+    public void onDisable() {
+        this.bungeeAudiences.close();
+        this.bungeeAudiences = null;
     }
 }
