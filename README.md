@@ -1,7 +1,7 @@
 # JoinMessagePlus
 ![Build and Test](https://github.com/4ndyZ/JoinMessagePlus/workflows/Build%20and%20Test/badge.svg) ![Release](https://github.com/4ndyZ/JoinMessagePlus/workflows/Release/badge.svg)
 
-[JoinMessagePlus](https://dev.bukkit.org/projects/join-message-plus/) is a Bukkit/BungeeCord Plugin which allows you to change or turn off the join and quit messages of Minecraft.
+[JoinMessagePlus](https://dev.bukkit.org/projects/join-message-plus/) is a Paper/BungeeCord Plugin which allows you to change or turn off the join and quit messages of Minecraft.
 
 Original by MrKinau.
 
@@ -21,31 +21,33 @@ Supports the following plugins [PlaceHolderAPI](https://www.spigotmc.org/wiki/pl
 [Download](https://dev.bukkit.org/projects/join-message-plus/files) the lastest version of the plugin and put it in the `plugin` directory of your Bukkit/Spigot or BungeeCord server. Reload or restart your Minecraft server.
 
 ## Configuration
-Bukkit/Spigot:
+Paper:
 
 The configuration file is located under `plugins/JoinMessagePlus/config-bukkit.yml`.
-```
+```yaml
+Syntax: "minimessage" # can be vanilla or minimessage.
 BungeeSupport:
-  Enabled: false/true # Activate this option if you only like to have Bungee Join/Quit-Messages. To use this feature you have to enable BungeeCord in the spigot.yml.
+  Enabled: false
 AuthMeSupport:
-  Enabled: false/true # Activate this option if you only like to have Join/Quit-Messages if an user logs in successful using AuthMe.
+  Enabled: false
 JoinMessage:
-  Enabled: true/false # Should the Join-Message be enabled.
-  Message: '&6[&a+&6] %player_name%' # Your custom Join-Message.
+  Enabled: true
+  Message: '<#FFAA00>[<#55FF55>+</#55FF55>] <player_name> </#FFAA00>'
 QuitMessage:
-  Enabled: true/false # Should the Quit-Message be enabled.
-  Message: '&6[&4-&6] %player_name%' # Your custom Quit-Message.
+  Enabled: true
+  Message: '<#FFAA00>[<#AA0000>-</#AA0000>] <player_name> </#FFAA00>'
 ```
 BungeeCord:
 
 The configuration file is located under `plugins/JoinMessagePlus/config-bungee.yml`.
-```
+```yaml
+Syntax: "minimessage" # can be vanilla or minimessage.
 GlobalJoinMessage:
-  Enabled: true/false # Should the Global-Join-Message be enabled.
-  Message: '&6[&a+&6] &6[&bGLOBAL&6] %player_name%' # Your custom Global-Join-Message.
+  Enabled: true
+  Message: '<#FFAA00>[<#55FF55>+</#55FF55>] [<#55FFFF>GLOBAL</#55FFFF>] <player_name> </#FFAA00>'
 GlobalQuitMessage:
-  Enabled: true/false # Should the Global-Quit-Message be enabled.
-  Message: '&6[&4-&6]&6 [&bGLOBAL&6] %player_name%'# Your custom Global-Quit-Message.
+  Enabled: true
+  Message: '<#FFAA00>[<#AA0000>-</#AA0000>] [<#55FFFF>GLOBAL</#55FFFF>] <player_name> </#FFAA00>'
 ```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
