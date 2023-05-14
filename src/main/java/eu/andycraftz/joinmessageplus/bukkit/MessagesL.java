@@ -18,6 +18,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.Objects;
+
 /**
  * JoinMessagePlus - Simple Join-Message Plugin
  *
@@ -28,6 +30,7 @@ public class MessagesL implements Listener {
 
     private final JoinMessagePlus plugin;
     private final MiniMessage miniMessage;
+    private final String Syntax;
 
     private final String JoinMessage;
     private final String QuitMessage;
@@ -36,19 +39,29 @@ public class MessagesL implements Listener {
     private final boolean QuitMessageEnabled;
 
     public MessagesL(JoinMessagePlus plugin) {
-        String QuitMessage1;
         this.plugin = plugin;
         this.miniMessage = MiniMessage.miniMessage();
+        this.Syntax = this.plugin.cfg.getConfig().getString("Syntax", "minimessage");
 
         if (this.plugin.bungeesupport) {
             JoinMessage = "";
             QuitMessage = "";
         } else {
-            JoinMessage = this.plugin.cfg.getConfig().getString("JoinMessage.Message");
-            assert JoinMessage != null;
 
-            QuitMessage = this.plugin.cfg.getConfig().getString("QuitMessage.Message");
-            assert QuitMessage != null;
+            String TempJoinMessage = this.plugin.cfg.getConfig().getString("JoinMessage.Message");
+            assert TempJoinMessage != null;
+            if (!Syntax.equals("minimessage")) {
+                TempJoinMessage = TempJoinMessage.replace("&", "§");
+            }
+
+            String TempQuitMessage = this.plugin.cfg.getConfig().getString("QuitMessage.Message");
+            assert TempQuitMessage != null;
+            if (!Syntax.equals("minimessage")) {
+                TempQuitMessage = TempQuitMessage.replace("&", "§");
+            }
+
+            JoinMessage = TempJoinMessage;
+            QuitMessage = TempQuitMessage;
         }
 
         JoinMessageEnabled = this.plugin.cfg.getConfig().getBoolean("JoinMessage.Enabled");
@@ -61,9 +74,18 @@ public class MessagesL implements Listener {
     }
 
     private void sendMessage(Player p, Player target, String msg) {
-        Component component = miniMessage.deserialize(JoinMessage, Placeholder.component("player_name", Component.text(p.getName())), Placeholder.component("player_displayname", Component.text(p.getDisplayName())));
-        Bukkit.getConsoleSender().sendMessage(component); // Send message also to console
-        target.sendMessage(component);
+        if (Objects.equals(Syntax, "minimessage")) {
+            Component component = miniMessage.deserialize(JoinMessage, Placeholder.component("player_name", Component.text(p.getName())), Placeholder.component("player_displayname", Component.text(p.getDisplayName())));
+            Bukkit.getConsoleSender().sendMessage(component); // Send message also to console
+            target.sendMessage(component);
+        } else {
+            msg = msg.replace("%player_name%", p.getName()).replace("%player_displayname%", p.getDisplayName());
+            if (plugin.placeholderapi) {
+                msg = PlaceholderAPI.setPlaceholders(p, msg);
+            }
+            Bukkit.getConsoleSender().sendMessage(msg); // Send message also to console
+            target.sendMessage(msg);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)

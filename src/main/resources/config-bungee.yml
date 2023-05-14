@@ -7,7 +7,8 @@
 # GlobalQuitMessage:
 #   Enabled: true - Should the Global-Quit-Message be enabled.
 #   Message: '&6[&bGLOBAL&6] [&4-&6] <player_name>/<player_displayname>' - Your custom Global-Quit-Message.
-#              
+#
+Syntax: "minimessage" # can be vanilla or minimessage.
 GlobalJoinMessage:
   Enabled: true
   Message: '<#FFAA00>[<#55FF55>+</#55FF55>] [<#55FFFF>GLOBAL</#55FFFF>] <player_name> </#FFAA00>'

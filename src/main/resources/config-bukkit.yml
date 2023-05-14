@@ -12,6 +12,7 @@
 #   Enabled: true/false - Should the Quit-Message be enabled.
 #   Message: '&6[&4-&6] <player_name>/<player_displayname>' - Your custom Quit-Message.
 #
+Syntax: "minimessage" # can be vanilla or minimessage.
 BungeeSupport:
   Enabled: false
 AuthMeSupport:
